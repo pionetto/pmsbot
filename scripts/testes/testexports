@@ -1,0 +1,61 @@
+function principal() {
+    
+
+
+function modulo1() {
+    
+
+module.exports = (robot) => {
+    robot.hear(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/gi, (res) => 
+    {
+        res.send(`Eu ouvi - ${res.match[0]} texto`)
+    })
+
+    robot.hear(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/gi, (res) => 
+    {
+        res.send(`Eu tambem ouvi - ${res.match[0]} texto`)
+    })
+
+    robot.hear(/[0-9]/gi, (res) => 
+    {
+        res.send (`Eu ouvi - ${res.match[0]} digito`)
+    })
+    robot.hear(/[0-9]/gi, (res) => 
+    {
+        res.send (`Eu tambem ouvi - ${res.match[0]} digito`)
+    })        
+    }
+}
+
+
+
+function modulo2() {
+    
+
+    module.exports = (robot) => {
+        robot.hear(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/gi, (res) => 
+        {
+            res.send (`Eu ouvi - ${res.match[0]} texto no segundo bloco`)
+        })
+    
+        robot.hear(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/gi, (res) => 
+        {
+            res.send (`Eu tambem ouvi - ${res.match[0]} texto  no segundo bloco`)
+        })
+    
+        robot.hear(/[0-9]/gi, (res) => 
+        {
+            res.send (`Eu ouvi - ${res.match[0]} digito  no segundo bloco`)
+        })
+        
+        robot.hear(/[0-9]/gi, (res) => 
+        {
+            res.send (`Eu tambem ouvi - ${res.match[0]} digito  no segundo bloco`)
+        })
+    }
+    }
+    modulo1();
+    // modulo2();
+}
+ 
+principal();

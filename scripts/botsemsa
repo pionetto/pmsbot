@@ -1,0 +1,83 @@
+
+function questionFever(robot) {
+    const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/ig;
+    
+    robot.hear(regex, res => resposta(res))
+
+    function resposta(resposta) {
+        resposta.finish()
+        resposta.send('outra resposta')
+        // resposta.done
+        // process.nextTick(questionCough())
+        return questionCough()
+    }
+}
+
+function questionCough(robot) {
+    
+    let regex = /[0-9]/ig;
+    
+    robot.hear(regex, res => resp(res))
+
+    function resp(resposta) {
+
+        // resposta.match[0].shift()
+        
+        // resposta.finish()
+        resposta.send(`outra resposta de tosse - ${resposta.match[0]}`)
+        // resposta.done
+        // process.nextTick(terceiraPergunta())
+        
+        // resposta.match[0] = '3'
+        // return terceiraPergunta()
+        // resposta.finish()
+        return questionTeste()
+        
+    }
+}
+
+function questionTeste(robot) {
+    
+    let regex = /[0-9]/ig;
+    
+    robot.hear(regex, res => resp(res))
+
+    function resp(resposta) {
+
+        // resposta.match[0].shift()
+        
+        // resposta.finish()
+        resposta.send(`segunda resposta de teste - ${resposta.match[0]}`)
+        // resposta.done
+        // process.nextTick(terceiraPergunta())
+        
+        // resposta.match[0] = '3'
+        // return terceiraPergunta()
+        
+        return questionFever()
+    }
+}
+
+// function terceiraPergunta(robot) {
+//     const regex = /[0-9]/ig;
+    
+//     robot.hear(regex, res => resposta(res))
+
+//     function resposta(resposta) {
+        
+//         resposta.finish()
+//         resposta.send(`resposta da terceira pergunta - ${resposta.match[0]}`)
+//         // resposta.done
+//         // process.nextTick(questionFever())
+//         return questionFever()
+//     }
+// }
+
+module.exports = (robot) => {
+    // console.log(robot)
+    
+    questionFever(robot);
+    questionCough(robot);
+    questionTeste(robot);
+    // terceiraPergunta(robot);
+}

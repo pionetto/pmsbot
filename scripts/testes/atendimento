@@ -1,0 +1,57 @@
+//Pergunta como o paciente esta se sentindo
+module.exports = (robot) => {
+
+    function initial() {
+
+    var contador = Number();
+        //[A-z]
+    robot.hear(/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/ig, (res) =>
+    // robot.hear(/[0-9]/ig, (res) =>
+        {
+            res.send (`Como você está se sentindo hoje?  \n
+            \t 1  - Ótimo \n
+            \t 2  - Bem \n
+            \t 3  - Regular \n
+            \t 4  - Mal \n
+            \t Digite um dos números acima \n `)
+
+            })
+            
+        function getHowAreyouFeeling() {
+            robot.hear(/[0-9]/ig, (res) =>
+        {   
+            howareyou = parseInt(res.match[0]);
+            res.send (howareyou)
+    
+        switch (howareyou) {
+            case 1:
+                contador += 1
+                // res.send (`Deu certo - ${contador}`)
+                getHowAreyouFeeling();
+                break;
+            case 2:
+                contador += 2
+                // res.send (`Deu certo - ${contador}`)
+                getHowAreyouFeeling();
+                break;
+            case 3:
+                contador += 3
+                // res.send (`Deu certo - ${contador}`)
+                getHowAreyouFeeling();
+                break;
+            case 4:
+                contador += 4
+                res.send (`Deu certo - ${contador}`)
+                getHowAreyouFeeling();
+                break;
+            default:
+                res.send (`nenhuma das alternativas`)
+                break;
+            }
+           
+            })    
+        }
+        getHowAreyouFeeling();
+    }
+    initial();
+}

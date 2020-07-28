@@ -1,0 +1,140 @@
+TextMessage = require('hubot').TextMessage
+
+class EarDropping 
+  constructor: (@robot) ->
+    @cache = []
+    @robot.brain.on 'loaded', =>
+      if @robot.brain.data.eardropping
+        @cache = @robot.brain.data.eardropping
+  add: (pattern, action, order) ->
+    task = {key: pattern, task: action, order: order}
+    @cache.push task
+    @robot.brain.data.eardropping = @cache
+  del: (pattern, action, order) ->
+    task = {key: pattern, task: action, order: order}
+    @cache.pop task
+    @robot.brain.data.eardropping = @cache
+  all: -> @cache
+  deleteByPattern: (pattern) ->
+    @cache = @cache.filter (n) -> n.key != pattern
+    @robot.brain.data.eardropping = @cache
+  deleteAll: () ->
+    @cache = []
+    @robot.brain.data.eardropping = @cache
+
+module.exports = (robot) ->
+  earDropping = new EarDropping robot
+
+  robot.respond /pergunta1 (.+?) pergunta2 (.+?) pergunta3 (.+?) pergunta4 (.+?)$/i, (msg) ->
+    key = msg.match[1]
+    for task_raw in msg.match[2].split ";"
+      task_split = task_raw.split "|"
+      # If it's a single task, don't add an "order" property
+      if not task_split[1]
+        earDropping.add(key, task_split[0])
+      else
+        earDropping.add(key, task_split[1], task_split[0])
+    msg.send "Eu estou agora estou deixando de ouvir #{key}. Hehe #{msg.match[2]}."
+    msg.send "==========================================================="
+    msg.send "O elemento 0 da matriz é: #{msg.match[0]}."
+    msg.send "O elemento 1 da matriz é: #{msg.match[1]}."
+    msg.send "O elemento 2 da matriz é: #{msg.match[2]}."
+    msg.send "O elemento 3 da matriz é: #{msg.match[3]}."
+    msg.send "O elemento 4 da matriz é: #{msg.match[4]}."
+    # msg.send "O elemento key é: #{key}."
+    # msg.send "O elemento task_raw é: #{task_raw}."
+    # msg.send "O elemento task_split0 é: #{task_split[0]}."
+    # msg.send "O elemento task_split1 é: #{task_split[1]}."
+    # msg.send "O elemento task_split é: #{task_split}."
+    msg.send "============================================================"
+    msg.match.shift()
+    msg.send "O elemento 0 da matriz é: #{msg.match[0]}."
+    msg.match.shift()
+    msg.send "O elemento 1 da matriz é: #{msg.match[1]}."
+    msg.match.shift()
+    msg.send "O elemento 2 da matriz é: #{msg.match[2]}."
+    msg.match.shift()
+    msg.send "O elemento 3 da matriz é: #{msg.match[3]}."
+    msg.match.shift()
+    msg.send "O elemento 4 da matriz é: #{msg.match[4]}."
+    msg.match.shift()
+    msg.match.shift()
+
+  
+  robot.respond /(.+?)$/i, (msg) ->
+      msg.send 'Ainda tem itens na lista'
+  # robot.respond /pare de ouvir *dropping$/i, (msg) ->
+    # earDropping.deleteAll()
+    # msg.send 'Okay, fine. :( I will keep my ears shut.'
+
+  # robot.hear /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/i, (msg) ->
+  robot.respond /(.+?) e (.+?)$/i, (msg) ->
+    # key = AAA e msg.match[1] = AAA
+    key = msg.match[1]
+    # task_raw = BBB e msg.match[2] = BBB
+    for task_raw in msg.match[2].split ";"
+    # task_split = BBB e task_raw = BBB
+      task_split = task_raw.split "|"
+      # If it's a single task, don't add an "order" property
+      # task_split[1] = nao definido
+      if not task_split[1]
+                      # key = AAA task_split[0] = BBB
+        earDropping.add(key, task_split[0])
+      else
+                      # key = AAA , task_split[1], task_split[0] = BBB
+        earDropping.add(key, task_split[1], task_split[0])
+    # earDropping.deleteAll()
+    msg.send "Estou ouvindo #{msg.match[1]}."
+    msg.send "Estou ouvindo #{msg.match[2]}."
+
+    pattern = msg.match[2]
+    # earDropping.deleteByPattern(pattern)
+    earDropping.deleteAll()
+    msg.send "Estou ouvindo apagado #{pattern}."
+
+
+  # robot.respond /(.+?)|(.+?)$/i, (msg) ->
+  #   pattern = msg.match[2]
+  #   earDropping.deleteByPattern(pattern)
+  #   msg.send "Estou ouvindo apagado #{msg.match[1]}."
+
+
+
+  # robot.hear /[0-9]/i, (msg) ->
+  #   earDropping.deleteAll()
+  #   msg.send 'Certo, tudo bem. :( Vou manter meus ouvidos fechados para numeros.'
+    
+  # robot.hear /[0-9]/i, (msg) ->
+  #   earDropping.deleteAll()
+  #   msg.send 'Certo, tudo bem. :( Vou manter meus ouvidos fechados para numeros novamente.'
+
+#   robot.respond /stop ear *dropping (for|on) (.+?)$/i, (msg) ->
+#     pattern = msg.match[2]
+#     earDropping.deleteByPattern(pattern)
+#     msg.send "Okay, I will ignore #{pattern}"
+
+#   robot.respond /show ear *dropping/i, (msg) ->
+#     response = "\n"
+#     for task in earDropping.all()
+#       response += "#{task.key} -> #{task.task}\n"
+#     msg.send response
+
+  # robot.respond /(.+)$/i, (msg) ->
+  robot.respond /testando123(.+)$/i, (msg) ->
+    robotHeard = msg.match[1]
+
+    tasks = earDropping.all()
+    tasks.sort (a,b) ->
+      return if a.order >= b.order then 1 else -1
+
+    tasksToRun = []
+    for task in tasks
+      if new RegExp(task.key, "i").test(robotHeard)
+        tasksToRun.push task
+
+    tasksToRun.sort (a,b) ->
+      return if a.order >= b.order then 1 else -1
+
+    for task in tasksToRun
+      if (robot.name != msg.message.user.name && !(new RegExp("^#{robot.name}", "i").test(robotHeard)))
+        robot.receive new TextMessage(msg.message.user, "#{robot.name}: #{task.task}")

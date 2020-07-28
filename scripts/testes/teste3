@@ -1,0 +1,139 @@
+
+//Pergunta como o paciente esta se sentindo
+module.exports = (robot) => {
+
+    function initial() {
+
+    var contador = Number();
+        //[A-z]
+    robot.hear(/^[A-Za-z0-9áàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/ig, (res) =>
+    
+    // robot.hear(/[0-9]/ig, (res) =>
+        {
+            res.send (`Como você está se sentindo hoje?  \n
+            \t 1  - Ótimo \n
+            \t 2  - Bem \n
+            \t 3  - Regular \n
+            \t 4  - Mal \n
+            \t Digite um dos números acima \n `)
+
+            getHowAreyouFeeling();
+ 
+            })
+
+        function getHowAreyouFeeling() {
+            robot.hear(/[0-9]/ig, (res) =>
+        {   
+            howareyou = parseInt(res.match[0]);
+            res.send (teste)
+    
+        switch (howareyou) {
+            case 1:
+                contador += 1
+                // res.send (`Deu certo - ${contador}`)
+                getHowAreyouFeeling();
+                break;
+            case 2:
+                contador += 2
+                // res.send (`Deu certo - ${contador}`)
+                getHowAreyouFeeling();
+                break;
+            case 3:
+                contador += 3
+                // res.send (`Deu certo - ${contador}`)
+                getHowAreyouFeeling();
+                break;
+            case 4:
+                contador += 4
+                // res.send (`Deu certo - ${contador}`)
+                getHowAreyouFeeling();
+                break;
+            default:
+                res.send (`nenhuma das alternativas`)
+                break;
+            }
+           
+            })    
+        }
+
+    }
+
+    initial();
+}
+
+
+// //Pergunta como o paciente esta se sentindo
+// module.exports = (robot) => {
+
+//     function getHowAreYouFeeling() {
+
+//        res.send (`Como você está se sentindo hoje?  \n
+//         \t 1  - Ótimo \n
+//         \t 2  - Bem \n
+//         \t 3  - Regular \n
+//         \t 4  - Mal \n
+//         \t Digite um dos números acima \n `)
+        
+//         var diagnostic = 0;
+
+//         switch (res.match[0]) {
+//             case "1":
+//                 diagnostic+=2;
+//                 getDoYouHaveFever();
+//             case "2":
+//                 getDoYouHaveFever();
+//             default:
+//                 return 'nada';
+//         }
+//     }
+
+//     function getDoYouHaveFever() {
+    
+//         //Pergunta se o paciente tem febre
+//             res.send(`Você  tem febre? \n 
+//         \t 1  - N  o \n 
+//         \t 2  - Sim, abaixo de 38 \n 
+//         \t 3  - Sim, 38 ou acima \n
+//         \t Digite um dos n  meros acima \n `)
+//     }   
+
+//     function getnName() {
+//     robot.hear(/robson/gi, (res) => {
+//         getHowAreYouFeeling();
+
+//         })
+//     }
+
+//     getnName();
+// }
+
+
+
+        // if (teste == '1') {
+        //     contador = contador + 0
+        //     res.send (`É 1`)            
+        // } 
+        // if (teste == '2') {
+        //     contador = contador + 1
+        //     res.send (`É 2`)        
+        // }
+        // if (teste == '3') {
+        //     contador = contador + 2
+        //     res.send (`É 3`)            
+        // } 
+        // if (teste == '4') {
+        //     contador = contador + 3
+        //     res.send (`É 4`)        
+        // }
+        // if (toString(contador) >= '3'){
+        //     res.send (toString(contador))        
+        // }        
+        // if (teste == '2') {
+        //     res.send (`É 2`)
+        // }
+
+            // if (res.teste == 1) {
+            //     res.send (`É 1`)
+            // } else if (teste == 2){
+            //     res.send (`É 2`);
+            // }
